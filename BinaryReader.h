@@ -1,3 +1,6 @@
+#ifndef HEADER_1070385A3DA2192D
+#define HEADER_1070385A3DA2192D
+
 #pragma once
 
 #include <stdexcept>
@@ -54,6 +57,14 @@ public:
 		return string;
 	}
 
+	void advance_c_string() {
+		position += std::string(reinterpret_cast<char*>(buffer.data() + position)).size() + 1;
+
+		if (position > buffer.size()) {
+			throw std::out_of_range("Trying to read out of range of buffer");
+		}
+	}
+
 	template<typename T>
 	[[nodiscard]] std::vector<T> read_vector(const size_t size) {
 		// These wouldn't make sense
@@ -79,3 +90,5 @@ public:
 		position += amount;
 	}
 };
+#endif // header guard 
+
