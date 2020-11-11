@@ -46,31 +46,31 @@ int load_terrain(std::ostream* out, std::string& input, bool debug)
 
 	<< "Offset: " << glm::to_string(reader.read<glm::vec2>()) << "\n\n";
 
-	for (uint32_t j = 0; j < height; j++) {
-		for (uint32_t i = 0; i < width; i++) {
+	if (debug) //Terrain changes are not readable
+        for (uint32_t j = 0; j < height; j++)
+            for (uint32_t i = 0; i < width; i++) {
 
-			*out << "Height: " << reader.read<uint16_t>() << '\n';
+                *out << "Height: " << reader.read<uint16_t>() << '\n';
 
-			const uint16_t water_and_edge = reader.read<uint16_t>();
-			*out << "Water height: " << (water_and_edge & 0x3FFF) << '\n'
-                 << "Is map edge: " << (bool)(water_and_edge & 0x4000) << '\n';
+                const uint16_t water_and_edge = reader.read<uint16_t>();
+                *out << "Water height: " << (water_and_edge & 0x3FFF) << '\n'
+                     << "Is map edge: " << (bool)(water_and_edge & 0x4000) << '\n';
 
-			const uint8_t texture_and_flags = reader.read<uint8_t>();
-			*out << "ground texture: " << (texture_and_flags & 0b00001111) << '\n'
+                const uint8_t texture_and_flags = reader.read<uint8_t>();
+                *out << "ground texture: " << (texture_and_flags & 0b00001111) << '\n'
 
-			<< "Has ramp: "     << (bool)(texture_and_flags & 0b00010000) << '\n'
-			<< "Has blight: "   << (bool)(texture_and_flags & 0b00100000) << '\n'
-			<< "Has water: "    << (bool)(texture_and_flags & 0b01000000) << '\n'
-			<< "Has boundary: " << (bool)(texture_and_flags & 0b10000000) << '\n';
+                << "Has ramp: "     << (bool)(texture_and_flags & 0b00010000) << '\n'
+                << "Has blight: "   << (bool)(texture_and_flags & 0b00100000) << '\n'
+                << "Has water: "    << (bool)(texture_and_flags & 0b01000000) << '\n'
+                << "Has boundary: " << (bool)(texture_and_flags & 0b10000000) << '\n';
 
-			const uint8_t variation = reader.read<uint8_t>();
-			*out << "Ground variation: " << (variation & 0b00011111) << '\n'
-			<< "Cliff variation: " << ((variation & 0b11100000) >> 5) << '\n';
+                const uint8_t variation = reader.read<uint8_t>();
+                *out << "Ground variation: " << (variation & 0b00011111) << '\n'
+                << "Cliff variation: " << ((variation & 0b11100000) >> 5) << '\n';
 
-			const uint8_t misc = reader.read<uint8_t>();
-			*out << "Cliff texture: " << ((misc & 0b11110000) >> 4) << '\n'
-			<< "Layer height: " << (misc & 0b00001111) << "\n\n";
-		}
-	}
+                const uint8_t misc = reader.read<uint8_t>();
+                *out << "Cliff texture: " << ((misc & 0b11110000) >> 4) << '\n'
+                << "Layer height: " << (misc & 0b00001111) << "\n\n";
+            }
 	return 0;
 }
