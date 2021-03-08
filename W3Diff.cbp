@@ -28,9 +28,9 @@
 		<Unit filename="Main.cpp" />
 		<Unit filename="MapInfo.hpp" />
 		<Unit filename="Mod.hpp" />
+		<Unit filename="Read.hpp" />
 		<Unit filename="Region.hpp" />
 		<Unit filename="Terrain.hpp" />
-		<Unit filename="read.hpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
