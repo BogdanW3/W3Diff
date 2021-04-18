@@ -1,0 +1,18 @@
+if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+	set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+endif ()
+
+if (DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+	set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif ()
+
+cmake_minimum_required(VERSION 3.13)
+project (W3Diff CXX)
+
+find_package(glm CONFIG REQUIRED)
+
+add_executable(W3Diff Main.cpp)
+
+target_compile_features(W3Diff PUBLIC cxx_std_20)
+
+target_link_libraries(W3Diff PRIVATE glm::glm)

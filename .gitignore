@@ -1,4 +1,2 @@
-bin
-obj
-*.depend
-*.layout
+.vs
+out

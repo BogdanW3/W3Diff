@@ -57,7 +57,7 @@ int load_map(std::ostream* out, std::string& input, bool debug)
          << "Ability skins: " << (bool)(flags & 0x40000) << '\n'
          << "Tileset: " << reader.read_string(1) << '\n'
 
-         << "Loading screen number: " << reader.read<uint32_t>() << '\n'
+         << "Loading screen number: " << reader.read<int32_t>() << '\n'
          << "Loading screen model: " << reader.read_c_string() << '\n'
          << "Loading screen text: " << reader.read_c_string() << '\n'
          << "Loading screen title: " << reader.read_c_string() << '\n'
@@ -133,7 +133,7 @@ int load_map(std::ostream* out, std::string& input, bool debug)
 	for (uint32_t i = 0; i < tech; i++)
     {
         *out << "Tech Unavailable for Players: " << std::bitset<32>(reader.read<uint32_t>()) << '\n'
-             << "Tech ID: " << reader.read_string(4) << '\n';
+             << "Tech ID: " << reader.read_string(4) << "\n\n";
 	}
 
 	uint32_t unit_groups = reader.read<uint32_t>();
@@ -156,6 +156,7 @@ int load_map(std::ostream* out, std::string& input, bool debug)
                 *out << reader.read_string(4) << ' ';
             *out << '\n';
         }
+		*out << '\n';
 	}
 
 	uint32_t item_groups = reader.read<uint32_t>();
@@ -165,10 +166,6 @@ int load_map(std::ostream* out, std::string& input, bool debug)
 		*out << "\nGroup number: " << reader.read<uint32_t>() << '\n'
              << "Group name: " << reader.read_c_string() << '\n';
 		uint32_t positions = reader.read<uint32_t>();
-		for (uint32_t j = 0; j < positions; j++)
-        {
-            *out << "Table type: " << reader.read<uint32_t>() << '\n';
-        }
         uint32_t lines = reader.read<uint32_t>();
 		for (uint32_t j = 0; j < lines; j++)
         {
