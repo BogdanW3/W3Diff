@@ -43,6 +43,5 @@ int to_text(std::string& input, std::string& output, bool debug)
     {
         errorcode = load_region(out, input, debug);
     } //I am NOT doing w3s until a better format is made, contributions are welcome
-    ((std::ofstream*)out)->close();
     return errorcode;
 }
