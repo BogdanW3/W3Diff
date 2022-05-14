@@ -16,7 +16,8 @@ int load_map(std::ostream* out, std::string& input, bool debug)
     fin.read(reinterpret_cast<char*>(buffer.data()), fileSize);
     fin.close();
     BinaryReader reader(buffer);
-    *out << "Version: " << reader.read<uint32_t>() << '\n'
+	int version;
+    *out << "Version: " << (version = reader.read<uint32_t>()) << '\n'
          << "Map version: " << reader.read<uint32_t>() << '\n'
          << "Editor version: " << reader.read<uint32_t>() << '\n'
          << "Game version: " << reader.read<uint32_t>() << '.'<< reader.read<uint32_t>() << '.'<< reader.read<uint32_t>() << '.'<< reader.read<uint32_t>() << '\n'
@@ -83,10 +84,13 @@ int load_map(std::ostream* out, std::string& input, bool debug)
 
          << "Lua: " << (bool)reader.read<uint32_t>() << '\n';
 
-	const int modes = reader.read<uint32_t>();
+    if (version >= 31)
+    {
+        const int modes = reader.read<uint32_t>();
     *out << "Supports SD: " << (bool)(modes & 0x0001) << '\n'
          << "Supports HD: " << (bool)(modes & 0x0002) << '\n'
-         << "TFT game data: " << (bool)(reader.read<uint32_t>()-1) << "\n\n";
+         << "TFT game data: " << (bool)(reader.read<uint32_t>() - 1) << "\n\n";
+    }
 
 	uint32_t players = reader.read<uint32_t>();
 	//*out << "Number of players: " << players << "\n\n";
@@ -99,8 +103,9 @@ int load_map(std::ostream* out, std::string& input, bool debug)
              << "Name: " << reader.read_c_string() << '\n'
              << "Starting position: " << glm::to_string(reader.read<glm::vec2>()) << '\n'
              << "Ally low priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n'
-             << "Ally high priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n'
-             << "Enemy low priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n'
+             << "Ally high priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n';
+		if (version >= 31)
+        *out << "Enemy low priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n'
              << "Enemy high priorities: " << std::bitset<32>(reader.read<uint32_t>()) << '\n';
 	}
 
