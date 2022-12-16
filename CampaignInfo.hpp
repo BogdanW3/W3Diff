@@ -56,9 +56,9 @@ int load_campaign(std::ostream* out, std::string& input, bool debug)
 	for (uint32_t i = 0; i < maps; i++)
     {
         if (debug)
-            *out << "DEBUG: Unknown: " << reader.read_c_string() << '\n';
+            *out << "DEBUG: Unknown: " << reader.read<uint8_t>() << '\n';
         else
-            reader.advance_c_string();
+            reader.read<uint8_t>();
 		*out << "Map path: " << reader.read_c_string() << "\n\n";
 	}
 	return 0;
